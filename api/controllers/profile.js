@@ -58,7 +58,7 @@ module.exports.showDevices = function(req, res){
     });
   } else {
     Device
-      .find({UID: req.body.UID })
+      .find({APIKey: req.body.APIKey })
       .exec(function(err, device) {
         res.status(200).json(
         device
@@ -129,10 +129,11 @@ module.exports.editProfile = function(req,res){
     id,
     {
       $set:{
-        name:req.body.name,
-        age:req.body.age,
-        weight:req.body.weight,
-        address:req.body.address
+        email: req.body.email,
+        password: hash,
+        role: req.body.role,
+        APIKey: req.body.APIKey,
+        callback_webhook:req.body.callback_webhook
       }
     },
     {new: true},

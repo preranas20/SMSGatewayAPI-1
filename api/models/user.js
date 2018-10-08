@@ -8,9 +8,6 @@ const userSchema = mongoose.Schema({
     APIKey: {
         type:String
     },
-    UID: {
-            type:Number
-        },
     email: { 
         type: String, 
         required: true, 
