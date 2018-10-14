@@ -2,18 +2,15 @@ const mongoose = require('mongoose');
 
 const messageSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    deviceId: {
-        	type: Number
-            },
     message: {
         type:String
     },
     date: {
             type : Date, default: Date.now
         },
-    from: { type: Number, required: true },
+    from: { type: String, required: true },
     to: {
-    	type: Number,
+    	type: String,
         required: true},
     status:{
        type:String

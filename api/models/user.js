@@ -17,7 +17,8 @@ const userSchema = mongoose.Schema({
     password: { type: String, required: true },
     callback_webhook:{
        type:String
-     }
+     },
+    phone:String
 });
 
 module.exports = mongoose.model('User', userSchema);

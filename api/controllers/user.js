@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const APIKey = require("apikeygen");
 
 const User = require("../models/user");
+
 
 exports.user_signup = (req, res, next) => {
   User.find({ email: req.body.email }) //check if email id exists before in DB
@@ -26,8 +28,9 @@ exports.user_signup = (req, res, next) => {
               email: req.body.email,
               password: hash,
               role: req.body.role,
-              APIKey: req.body.APIKey,
-              callback_webhook:req.body.callback_webhook
+              APIKey: APIKey.apikey(),
+              callback_webhook:req.body.callback_webhook,
+              phone:req.body.phone
             });
             user
               .save()

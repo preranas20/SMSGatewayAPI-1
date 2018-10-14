@@ -2,12 +2,15 @@ const mongoose = require('mongoose');
 
 const deviceSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    UID: {
-        type:Number
+    APIKey: {
+        type:String
     },
-    phone_id: {
-            type:Number
-        }
+    phone:{
+    	type:String
+    },
+    callback_webhook: {
+            type:String
+     }
 });
 
 module.exports = mongoose.model('Device', deviceSchema);

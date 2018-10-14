@@ -14,9 +14,11 @@ router.get("/details",checkAuth, UserProfile.showDeveloperDetails);
 router.get("/devloperlist",checkAuth, UserProfile.showDevelopers);
 router.post("/showlogs",checkAuth, UserProfile.showLogs);
 router.get("/showdevices",checkAuth, UserProfile.showDevices);
-
+router.post("/recivedToGateway",UserProfile.receivedMessage);
+router.post("/receivedForDeveloper",UserProfile.receivedForDeveloper);
 //To test stubs:
 router.post("/addMessage", UserProfile.addMessage);
+router.post("/addDevice", UserProfile.addDevice);
 
 router.put("/profile/edit",checkAuth,UserProfile.editProfile);
 
