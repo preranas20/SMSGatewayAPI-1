@@ -75,8 +75,8 @@ var ReceiveToGateway = function(dev, next){
   Device
   .findOne({ deviceId : dev })
   .exec(function(err,device){
-      console.log(device[0]);
-       next(device[0]);
+      console.log(device);
+       next(device);
   });
 };
 
