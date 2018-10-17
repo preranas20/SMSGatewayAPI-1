@@ -18,7 +18,7 @@ function AppViewModel() {
         eraseCookie("token");
         eraseCookie('role');
           self.token(null); self.role(null);
-        window.location.reload();
+          window.location="index.html"
     }
 
     self.login = function() {

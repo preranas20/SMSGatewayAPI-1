@@ -49,6 +49,7 @@ var newmessage = new Message({
           title: toPhoneNumber,
           body: messageText
       },
+      
       token: registrationToken
       };
 
