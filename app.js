@@ -29,7 +29,16 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(express.static('WebApp'))
 // Routes which should handle requests
+app.get('/index.html',function(req,res){
+  res.sendFile(__dirname+'/WebApp/index.html');
+  //__dirname : It will resolve to your project folder.
+});
+app.get('/SurveyDetail.html',function(req,res){
+  res.sendFile(__dirname+'/WebApp/SurveyDetail.html');
+  //__dirname : It will resolve to your project folder.
+});
 
 app.use("/user", userRoutes);
 
