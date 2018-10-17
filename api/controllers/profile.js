@@ -121,11 +121,12 @@ module.exports.showLogs = function(req, res){
 };
 
 module.exports.addDevice = function(req, res){
-const device = new Device({
+var userId=req.userData.userId;
+  const device = new Device({
               _id: new mongoose.Types.ObjectId(),
               deviceId: req.body.deviceId,
               phone: req.body.phone,
-              user_id: req.body.user_id
+              user_id: userId
             });
         device.save()
               .then(result => {

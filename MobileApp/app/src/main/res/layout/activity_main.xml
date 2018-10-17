@@ -30,15 +30,18 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="162dp"
+        android:layout_marginBottom="70dp"
         android:text="@string/btnLogin" />
 
-    <Button
-        android:id="@+id/logTokenButton"
+    <EditText
+        android:id="@+id/editPhone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/btnLogin"
-        android:layout_marginBottom="71dp"
-        android:text="Log Token" />
+        android:layout_alignEnd="@+id/editPassword"
+        android:layout_below="@+id/editPassword"
+        android:layout_marginTop="50dp"
+        android:ems="10"
+        android:hint="+11234567890"
+        android:inputType="number" />
+
 </RelativeLayout>

