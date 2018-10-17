@@ -37,7 +37,7 @@ import okhttp3.ResponseBody;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG ="smsTest" ;
-    private static String remoteIP="http://localhost:5000";
+    private static String remoteIP="http://18.234.89.40:5000";
     TextView username,password,phone;
     Button btnLogin;
     String email,pass,phonenumber;
@@ -68,13 +68,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .build();
         Request request = new Request.Builder()
                 .url(remoteIP+"/user/login")
+                .header("Content-Type","application/json")
                 .post(formBody)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.d(TAG, "onFailure: ");
+                Log.d(TAG, "onFailure: login ");
             }
 
             @Override
@@ -173,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             email=username.getText().toString();
             pass=password.getText().toString();
 
-            phonenumber = phone.getText().toString();
+            phonenumber = "+1"+phone.getText().toString();
             loginApi(email,pass,phonenumber);
             //SmsManager.getDefault().sendTextMessage("9804309833", null, "sending sms through the dev app", null, null);
 
@@ -183,65 +184,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(number, null, smsBody, null, null);
     }
-    public void sendMessageToserver(String fromNumber, String messageText) {
-        String deviceId;
 
-        SharedPreferences sharedPref = getSharedPreferences(
-                "mypref", Context.MODE_PRIVATE);
-        deviceId = sharedPref.getString("deviceId",null);
-        final OkHttpClient client = new OkHttpClient();
-        RequestBody formBody = new FormBody.Builder()
-                .add("message",messageText)
-                .add("deviceId",deviceId)
-                .add("from",fromNumber)
-                .build();
-        Request request = new Request.Builder()
-                .url(remoteIP+"/user/recivedToGateway")
-                .post(formBody)
-                .build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d(TAG, "onFailure: ");
-            }
-
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                String str;
-                try (final ResponseBody responseBody = response.body()) {
-                    if (!response.isSuccessful()) {
-
-                        MainActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                Toast.makeText(MainActivity.this, responseBody.toString(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                    Headers responseHeaders = response.headers();
-                    for (int i = 0, size = responseHeaders.size(); i < size; i++) {
-                        System.out.println(responseHeaders.name(i) + ": " + responseHeaders.value(i));
-                    }
-                    str=responseBody.string();
-                }
-
-                Log.d(TAG, "onResponse: "+str );
-                Gson gson = new Gson();
-
-                final ResponseApi result=  (ResponseApi) gson.fromJson(str, ResponseApi.class); // Fails to deserialize foo.value as Bar
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                          Toast.makeText(MainActivity.this, result.messgae, Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-        });
-
-    }
     public void saveDeviceMapping(final String PhoneNumber, final String token) {
 
         FirebaseInstanceId.getInstance().getInstanceId()
@@ -280,6 +223,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 .post(formBody)
                                 .addHeader("Authorization","BEARER "+token)
                                 .build();
+                        client.newCall(request).enqueue(new Callback() {
+                            @Override
+                            public void onFailure(Call call, IOException e) {
+                                Log.d(TAG, "onFailure: ");
+                            }
+
+                            @Override
+                            public void onResponse(Call call, final Response response) throws IOException {
+                                String str;
+                                try (final ResponseBody responseBody = response.body()) {
+
+                                    Headers responseHeaders = response.headers();
+                                    for (int i = 0, size = responseHeaders.size(); i < size; i++) {
+                                       // System.out.println(responseHeaders.name(i) + ": " + responseHeaders.value(i));
+                                    }
+                                    str=responseBody.string();
+                                }
+
+                                Log.d(TAG, "onResponse: "+str );
+                                Gson gson = new Gson();
+
+                                final ResponseApi result=  (ResponseApi) gson.fromJson(str, ResponseApi.class); // Fails to deserialize foo.value as Bar
+                                Log.d(TAG, "smsTest: "+ result.messgae);
+                            }
+
+                        });
 
                     }
                 });

@@ -9,6 +9,7 @@ function AppViewModel() {
     self.newname=ko.observable('ankit');
     self.newemail=ko.observable('ak@a.com');
     self.newpassword=ko.observable('a');
+    self.callback_webhook=ko.observable('http://localhost:2000/sms');
   var token=  readCookie("token");
     self.token=ko.observable(token);
     self.adminName = ko.observable('Admin');
@@ -83,8 +84,9 @@ function AppViewModel() {
         contentType: 'application/json',
         data: JSON.stringify({
             email: self.email(),
+            callback_webhook:self.callback_webhook(),
             password:self.password() }),
-            callback_webhook:self.callback_webhook,
+            
             url: self.urlIP()+"/user/signup",
            
             success: function(result) {
