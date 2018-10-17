@@ -123,9 +123,9 @@ module.exports.showLogs = function(req, res){
 module.exports.addDevice = function(req, res){
 const device = new Device({
               _id: new mongoose.Types.ObjectId(),
-              APIKey: req.body.apiKey,
+              deviceId: req.body.deviceId,
               phone: req.body.phone,
-              callback_webhook: req.body.callback_webhook
+              user_id: req.body.user_id
             });
         device.save()
               .then(result => {

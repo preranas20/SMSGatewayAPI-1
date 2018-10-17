@@ -13,7 +13,10 @@ mongoose.Promise = global.Promise;
 
 app.use(morgan("dev"));
 app.use('/uploads', express.static('uploads'));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static('WebApp'))
+
+
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
@@ -29,7 +32,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.static('WebApp'))
 // Routes which should handle requests
 app.get('/index.html',function(req,res){
   res.sendFile(__dirname+'/WebApp/index.html');
@@ -56,5 +58,6 @@ app.use((error, req, res, next) => {
     }
   });
 });
+
 
 module.exports = app;
