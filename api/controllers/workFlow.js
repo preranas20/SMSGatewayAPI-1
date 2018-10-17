@@ -9,7 +9,7 @@ var serviceAccount = require('../AccountKey/smsgateway-5d944-firebase-adminsdk-z
 
 module.exports.SendToDevice= function(req, res){
   //console.log(req.body);
-
+var apiKey =req.body.apiKey;
   var phoneNumer=req.body.phone;
   var messageText=req.body.messageText;
   var toPhoneNumber=req.body.toPhoneNumber;
@@ -20,6 +20,15 @@ module.exports.SendToDevice= function(req, res){
     databaseURL: "https://smsgateway-5d944.firebaseio.com"
   });
  // console.log(phone);
+ validateUser(apiKey,function name(err,params) {
+   if(err){
+   console.log('Error sending message:', error);
+   res.status(500).json({
+     message: err,
+     status: 500
+   });
+  }
+
   getDevice(phoneNumer,function(data){
 //this registration token is deviceID from the Device model
 var newmessage = new Message({
@@ -54,18 +63,18 @@ var newmessage = new Message({
            .save()
            .then(result => {
             console.log("logging done");
-            
+            res.status(201).json({
+        
+              message: "Successfully sent message",
+              status: 200
+            });
            })
             .catch(err => {
             console.log(err);
            
           });
         
-        res.status(201).json({
-        
-          message: "Successfully sent message",
-          status: 200
-        });
+       
       })
       .catch((error) => {
         console.log('Error sending message:', error);
@@ -75,6 +84,7 @@ var newmessage = new Message({
         });
       });
     });
+  });
   
 };
 
@@ -89,8 +99,16 @@ var getDevice = function (req,next) {
    next(device[0]);
   });
 };
-
-
+var validateUser= function(key,next) {
+  console.log("userAPIKey: ",key);
+  User
+  .find({ APIKey: key })
+  .exec(function(err, user) {
+    console.log(user[0]);
+   next(err,user[0]);
+  });
+  
+}
 var ReceiveToGateway = function(dev, next){
  console.log('getting useridfor this phone number.',dev)
  
