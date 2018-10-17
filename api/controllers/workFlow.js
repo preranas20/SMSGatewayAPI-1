@@ -83,7 +83,8 @@ var ReceiveToGateway = function(req, next){
 
     
 module.exports.receivedMessage = function(req,res){
-  deviceId=req.body.deviceId;
+  var deviceId=req.body.deviceId;
+  console.log(deviceId);
   console.log("Inside receivedMessage");
   ReceiveToGateway(deviceId,function(data){
   
