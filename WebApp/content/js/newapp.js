@@ -5,7 +5,7 @@ function AppViewModel() {
    // var qrcode = new QRCode("qrcode");
     self.email=ko.observable('');
     self.password=ko.observable('');
-    self.urlIP=ko.observable('http://localhost:5000');
+    self.urlIP=ko.observable('http://18.234.89.40:5000');
     self.newname=ko.observable('ankit');
     self.newemail=ko.observable('ak@a.com');
     self.newpassword=ko.observable('a');

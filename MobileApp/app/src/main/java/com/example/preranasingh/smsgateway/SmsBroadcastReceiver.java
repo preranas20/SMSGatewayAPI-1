@@ -93,6 +93,7 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
         Request request = new Request.Builder()
                 .url(remoteIP+"/user/recivedToGateway")
                 .post(formBody)
+                .header("Content-Type","application/json")
                 .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
