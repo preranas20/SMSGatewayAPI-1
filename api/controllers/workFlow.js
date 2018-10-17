@@ -83,7 +83,7 @@ module.exports.receivedMessage = function(req,res){
   console.log("Inside receivedMessage");
   Device
   .findOne({ deviceId : dev })
-  .exec(function(data){
+  .exec(function(err,data){
     console.log(data);
     User.find({_id:data.user_id})
     .exec()
