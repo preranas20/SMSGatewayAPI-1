@@ -10,13 +10,16 @@ function AppViewModel() {
     self.newemail=ko.observable('ak@a.com');
     self.newpassword=ko.observable('a');
     self.callback_webhook=ko.observable('http://localhost:2000/sms');
+    self.APIKey = ko.observable('');
+    self.role = ko.observable('');
   var token=  readCookie("token");
     self.token=ko.observable(token);
     self.adminName = ko.observable('Admin');
 
     self.logout=function () {
         eraseCookie("token");
-          self.token(null);
+        eraseCookie('role');
+          self.token(null); self.role(null);
         window.location.reload();
     }
 
@@ -44,7 +47,7 @@ function AppViewModel() {
            
             success: function(result) {
                 //Write your code here
-                if(result.status==200 &&  result.role=="admin"){
+                if(result.status==200){
                 //self.token(result.token);
                 $.toast({ heading: 'Success',
                 text: result.message,
@@ -52,8 +55,13 @@ function AppViewModel() {
                 icon: 'success'});
                 $('#login').hide();
                 createCookie("token",result.token,1);
+                createCookie("role",result.role,1);
+
+                if(result.role=="admin")
                 self.getData();
-                
+                else{
+                    window.location="SurveyDetail.html";
+                }
                 }
                 else{
                     if(result.status==200 )
@@ -93,7 +101,7 @@ function AppViewModel() {
                 //Write your code here
                 if(result.status==200){
                 //self.token(result.token);
-                
+               self.APIKey( result.data.apiKey);
                 $.toast({ heading: 'Success',
                 text: result.message,
                   showHideTransition: 'slide',
@@ -130,16 +138,19 @@ function AppViewModel() {
                 contentType: 'application/json',
                 headers: {"Authorization": "BEARER "+readCookie('token')},
                
-                    url: self.urlIP()+ "/user/profile/showUsers",
+                    url: self.urlIP()+ "/user/devloperlist",
                    
                     success: function(result) {
                         //Write your code here
                         if(result.status==200){
                         //self.token(result.token);
-                    
-                        self.showTable(result.users);
+                        console.log('not getting status');
+                        console.log(result);
+                        self.showTable(result.data);
                         }
                         else{
+                            console.log('not getting status');
+                            console.log(result);
                             $.toast({heading:'error',text:result.message, icon: 'error'});
                         }
                         },
@@ -159,10 +170,10 @@ function AppViewModel() {
             data: tabledata,
            
             columns: [
-                { data: 'name', title:'Name' },
+                { data: 'email', title:'Email' },
                 { data: '_id',title:'UserId' },
-                { data: 'surveyId',title:'SurveyId' },
-                { data: 'score' ,title:'Score'}
+                { data: 'APIKey',title:'APIkey' },
+                { data: 'callback_webhook' ,title:'Webhook'}
             ]
         } );
 
@@ -178,7 +189,7 @@ function AppViewModel() {
             var userid= this.cells[1].innerHTML;
             var sid = this.cells[2].innerHTML;
             createCookie("uid",userid);
-            createCookie("sid",sid);
+            //createCookie("sid",sid);
              window.location="SurveyDetail.html";
              
              self.getUserDetailSurvey();

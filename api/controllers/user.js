@@ -27,7 +27,7 @@ exports.user_signup = (req, res, next) => {
               _id: new mongoose.Types.ObjectId(),
               email: req.body.email,
               password: hash,
-             // role: req.body.role,
+             role: req.body.role?req.body.role:'developer',
               APIKey: APIKey.apikey(),
               callback_webhook:req.body.callback_webhook
              // phone:req.body.phone
@@ -87,6 +87,7 @@ exports.user_login = (req, res, next) => {
           return res.status(200).json({
             message: "Auth successful",
             token: token,
+            role:user[0].role,
            // userId:user[0]._id,
             status: 200
           });

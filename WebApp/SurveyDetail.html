@@ -15,18 +15,31 @@
     <link href="content/css/toast.css" rel="stylesheet" type="text/css" />
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
-    
-    <title>In class 2</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+
+    <title>SMS Gateway</title>
   </head>
   <body>
     <div id="body">
      
 <div id="userDetail" class="container" ><br>
+  <!-- ko if: $root.role()=="admin"-->
     <div class="float-right pd-3 mb-2 "> <button class=" btn btn-success " data-bind="click:$root.showUsers"> Back</button> 
-    </div><br><br><br>    
+    </div>
+    <!-- /ko -->
+    <!-- ko ifnot:$root.role()=="admin"-->
+    <a  href="#" data-bind="click:$root.logout" class="float-right pd-3 mb-2  btn btn-danger btn-sm">
+        <span class="text-white"><i class="fas fa-sign-out-alt "></i>
+          </span> Log out
+      </a>
+    <!-- /ko-->
+    <br><br><br>    
     <table id="table_Detail"  class="display ">
         <thead class="thead-dark">
             <tr>
+                <th></th>
+                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>

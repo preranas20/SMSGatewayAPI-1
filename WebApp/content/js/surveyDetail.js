@@ -5,13 +5,21 @@ function AppViewModel() {
     
     self.email=ko.observable('ak@a.com');
     self.password=ko.observable('a');
-    self.urlIP=ko.observable('http://18.223.110.166:5000');
+    self.urlIP=ko.observable('http://18.234.89.40:5000');
     
     self.newname=ko.observable('ankit');
     self.newemail=ko.observable('ak@a.com');
     self.newpassword=ko.observable('a');
     self.token=ko.observable('');
     self.adminName = ko.observable('Admin');
+    self.role=ko.observable(readCookie('role'));
+
+    self.logout=function () {
+        eraseCookie("token");
+        eraseCookie('role');
+          self.token(null); self.role(null);
+        window.location.reload();
+    }
 
     self.login = function() {
       
@@ -60,6 +68,7 @@ function AppViewModel() {
         }
   
     self.showUsers=function (params) {
+    
     window.location="index.html";
     }
     self.getUserDetailSurvey =function (params) {
@@ -71,28 +80,19 @@ function AppViewModel() {
             data: JSON.stringify({
                 _id: readCookie("uid"),
                surveyId: readCookie("sid") }),
-                url: self.urlIP()+ "/user/profile/showsurvey",
+                url: self.urlIP()+ "/user/showlogs",
                
                 success: function(result) {
                     //Write your code here
+                    console.log(result);
                     if(result.status==200){
                     //self.token(result.token);
                 //on success call 
 $('#userDetail').fadeIn(2000);
-function row(index,value,sid)
-{
-    this.question = Questions[index];
-    this.answer = options[0][value];
-    this.score=value;
-    this.surveyId=sid;
-}
+
 var tableData=[];
-var answerArray = result.user[0].answers;
-//get data from result.user and generate the complete row wise data for each question and its respective answer from answer array
-$.each(answerArray, function( index, value ) {
-  tableData[index]= new row(index,value,result.user[0]._id);
-  });
-self.showUserDetailTable(tableData);
+
+self.showUserDetailTable(result.data);
                     
                     }
                     else{
@@ -118,9 +118,13 @@ self.showUserDetailTable= function (tabledata) {
             data: tabledata,
             dom: 'Bfrtip',
             columns: [
-                { data: 'question', title:'Question' },
-                { data: 'answer',title:'Answer' },
-                { data: 'score',title:'Score' }
+                { data: 'user_id', title:'User Id' },
+                { data: 'message',title:'Text' },
+                { data: 'from', title:'from' },
+                { data: 'to',title:'to' },
+                { data: 'status', title:'Direction' },
+               
+                { data: 'date',title:'Date' }
                 
             ],
             buttons: [{
@@ -146,103 +150,6 @@ self.showUserDetailTable= function (tabledata) {
 self.getUserDetailSurvey();
 
 
-//dummy data to be deleted later
-var Questions = [
-    "How often do you have a drink containing alcohol?",
-    "How many drinks containing alcohol do you have on a typical day when you are drinking?",
-    " How often do you have six or more drinks on one occasion?",
-    " How often during the last year have you found that you were not able to stop drinking once you had started?"
-    ,"How often during the last year have you failed to do what was normally expected from you because of drinking?"
-    ," How often during the last year have you needed a first drink in the morning to get yourself going after a heavy drinking session?"
-    ," How often during the last year have you had a feeling of guilt or remorse after drinking?"
-    ," How often during the last year have you been unable to remember what happened the night before because you had been drinking?"
-    ,"Have you or someone else been injured as a result of your drinking?"
-    ,"Has a relative or friend or a doctor or another health worker been concerned about your drinking or suggested you cut down?"
-]
-var options = [
-    [ "Never"
-    ,"Monthly or less"
-    ,"2 to 4 times a month"
-    ,"2 to 3 times a week"
-    ," 4 or more times a week" 
-    ]
-    ,[  "1 or 2"
-        ,"3 or 4"
-        ,"5 or 6"
-        ," 7, 8, or 9"
-        ," 10 or more"
-    ]
-    ,[ "Never"
-        ," Less than monthly"
-       ,"Monthly"
-        ," Weekly"
-       ," Daily or almost daily"
-
-    ]
-    ,[ "Never"
-        ," Less than monthly"
-       ,"Monthly"
-        ," Weekly"
-       ," Daily or almost daily"
-
-    ]
-    ,[ "Never"
-        ," Less than monthly"
-       ,"Monthly"
-        ," Weekly"
-       ," Daily or almost daily"
-
-    ]
-    ,[ "Never"
-    ," Less than monthly"
-   ,"Monthly"
-    ," Weekly"
-   ," Daily or almost daily"
-    ]
-    ,[ "Never"
-        ," Less than monthly"
-       ,"Monthly"
-        ," Weekly"
-       ," Daily or almost daily"
-
-    ]
-    ,[ "Never"
-        ," Less than monthly"
-       ,"Monthly"
-        ," Weekly"
-       ," Daily or almost daily"
-
-    ]
-    ,[ "No"
-,"","Yes, but not in the last year"
-,""," Yes, during the last year"
-
-]
-,[ "No"
-,"","Yes, but not in the last year"
-,""," Yes, during the last year"
-
-]
-];
-
-var data = [
-    {
-        "name":       "Tiger Nixon",
-        "position":   "System Architect",
-        "salary":     "$3,120",
-        "start_date": "2011/04/25",
-        "office":     "Edinburgh",
-        "extn":       "5421"
-    },
-    {
-        "name":       "Garrett Winters",
-        "position":   "Director",
-        "salary":     "$5,300",
-        "start_date": "2011/07/25",
-        "office":     "Edinburgh",
-        "extn":       "8422"
-    }
-];
 
 }
 
