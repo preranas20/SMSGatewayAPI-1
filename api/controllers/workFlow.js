@@ -40,6 +40,31 @@ module.exports.SendToDevice= function(req, res){
       .then((response) => {
         // Response is a message ID string.
         console.log('Successfully sent message:', response);
+        const message = new Message({
+          _id: new mongoose.Types.ObjectId(),
+           message: messageText,
+           date: Date.now(),
+           from: phoneNumer,
+           to:toPhoneNumber,
+           status:"DownStream",
+           user_id:data.user_id
+          // phone:req.body.phone
+         });
+         message
+           .save()
+           .then(result => {
+            
+             res.status(201).json({
+              
+               message: "Message Logged",
+               status: 200
+             });
+           })
+            .catch(err => {
+            console.log(err);
+           
+          });
+        
         res.status(201).json({
         
           message: "Successfully sent message",
