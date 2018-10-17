@@ -10,7 +10,7 @@ const Message=require("../models/message");
 var admin = require('firebase-admin');
 var serviceAccount = require('../AccountKey/smsgateway-5d944-firebase-adminsdk-zbyn3-0ffa63630d.json');
 
-exports.SendToDevice= function(req,res){
+module.exports.SendToDevice= function(req,res){
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://smsgateway-5d944.firebaseio.com"
@@ -52,6 +52,91 @@ exports.SendToDevice= function(req,res){
 
 exports.getDeviceId = function (req,res) {
   
+};
+
+
+var ReceiveToGateway = function(req, next){
+ console.log('getting useridfor this phone number.')
+  Device
+  .find({deviceId:req.deviceId})
+  .exec(function(err,device){
+      console.log(device[0]);
+       next(device[0]);
+  });
+};
+
+var getDevice = function (req,next) {
+  console.log('getting device for this phone number.')
+  var phoneNumber= req;
+  console.log(phoneNumber);
+  Device
+  .find({ phone: phoneNumber })
+  .exec(function(err, device) {
+    console.log(device);
+   next(device[0]);
+  });
+};
+
+    
+module.exports.receivedMessage = function(req,res){
+  deviceId=req.body.deviceId;
+  console.log("Inside receivedMessage");
+  ReceiveToGateway(deviceId,function(data){
+  
+
+  User.find({_id:data.user_id})
+    .exec()
+    .then(user => {
+      if (user.length < 1) {
+        return res.status(401).json({
+          message: "User Not Found",
+          status: 401
+        });
+      }
+     if (err) {
+          return res.status(401).json({
+            message: "Request Failed",
+            status: 401
+          });
+        }
+        else {
+          const message = new Message({
+              message: req.body.message,
+              date: new Date().toString().replace(/T/, ':').replace(/\.\w*/, ''),
+              from: req.body.from,
+              to: req.body.deviceId,
+              status:"Upstream",
+              user_id:data.user_id
+             // phone:req.body.phone
+            });
+            message
+              .save()
+              .then(result => {
+                console.log(user);
+                res.status(201).json({
+                  data:{callback_webhook:user[0].callback_webhook},
+                  message: "Message Received",
+                  status: 200
+                });
+              })
+         
+        }
+        res.status(401).json({
+          message: "Request failed",
+          status: 401
+        });
+      
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+        status: 500
+      });
+    });
+    });
+
+
 };
 
 
