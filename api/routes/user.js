@@ -20,7 +20,7 @@ router.post("/recivedToGateway",workFlowController.receivedMessage);
 ;
 //To test stubs:
 router.post("/addMessage", UserProfile.addMessage);
-router.post("/addDevice", UserProfile.addDevice);
+router.post("/addDevice",checkAuth, UserProfile.addDevice);
 //fcm server routes
 router.post("/sendToDevice",workFlowController.SendToDevice);
 

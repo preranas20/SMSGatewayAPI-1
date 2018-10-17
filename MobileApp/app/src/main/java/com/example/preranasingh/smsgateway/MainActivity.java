@@ -1,6 +1,9 @@
 package com.example.preranasingh.smsgateway;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -18,12 +21,26 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.gson.Gson;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.Headers;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG ="smsTest" ;
-    TextView username,password;
+    private static String remoteIP="http://18.234.89.40:5000";
+    TextView username,password,phone;
     Button btnLogin;
-    String email,pass;
+    String email,pass,phonenumber;
     private static final int SMS_PERMISSION_CODE = 0;
 
     @Override
@@ -33,42 +50,85 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         username=findViewById(R.id.editUsername);
         password=findViewById(R.id.editPassword);
+        phone= findViewById(R.id.editPhone);
         btnLogin=findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(this);
 
         if ( !isSmsPermissionGranted())
             requestReadAndSendSmsPermission();
 
-        //call the gettoken method to get the token fro FCM
-        Button logTokenButton = findViewById(R.id.logTokenButton);
-        logTokenButton.setOnClickListener(new View.OnClickListener() {
+    }
+    public void loginApi(String username, String password, final String PhoneNumber)
+    {
+
+        final OkHttpClient client = new OkHttpClient();
+        RequestBody formBody = new FormBody.Builder()
+                .add("email", username)
+                .add("password", password)
+                .build();
+        Request request = new Request.Builder()
+                .url(remoteIP+"/user/login")
+                .header("Content-Type","application/json")
+                .post(formBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onClick(View v) {
-                // Get token
-                FirebaseInstanceId.getInstance().getInstanceId()
-                        .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            public void onFailure(Call call, IOException e) {
+                Log.d(TAG, "onFailure: login ");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String str;
+                try (final ResponseBody responseBody = response.body()) {
+                    if (!response.isSuccessful()) {
+
+                        MainActivity.this.runOnUiThread(new Runnable() {
                             @Override
-                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                                if (!task.isSuccessful()) {
-                                    Log.w(TAG, "getInstanceId failed", task.getException());
-                                    return;
-                                }
+                            public void run() {
 
-                                // Get new Instance ID token
-                                String token = task.getResult().getToken();
-
-                                // Log and toast
-                                String msg = getString(R.string.msg_token_fmt, token);
-                                Log.d(TAG, msg);
-                                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, responseBody.toString(), Toast.LENGTH_SHORT).show();
                             }
                         });
+                    }
 
 
+
+                    Headers responseHeaders = response.headers();
+                    for (int i = 0, size = responseHeaders.size(); i < size; i++) {
+                        System.out.println(responseHeaders.name(i) + ": " + responseHeaders.value(i));
+                    }
+
+                    //System.out.println(responseBody.string());
+                    str=responseBody.string();
+                }
+                // str= response.body().string();
+                Log.d(TAG, "onResponse: "+str );
+                Gson gson = new Gson();
+
+                final ResponseApi result=  (ResponseApi) gson.fromJson(str, ResponseApi.class); // Fails to deserialize foo.value as Bar
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!result.status.equalsIgnoreCase("200")) {
+                            Toast.makeText(MainActivity.this, result.messgae, Toast.LENGTH_SHORT).show();
+                        }else {
+
+                            saveDeviceMapping(PhoneNumber,result.token);
+
+                        }
+                        //   Toast.makeText(activity, "token created successfully", Toast.LENGTH_SHORT).show();
+                        //do something more.
+
+                    }
+                });
             }
+
         });
 
     }
+
     public boolean isSmsPermissionGranted() {
         return ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
@@ -113,6 +173,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (view.getId()==R.id.btnLogin){
             email=username.getText().toString();
             pass=password.getText().toString();
+
+            phonenumber = "+1"+phone.getText().toString();
+            loginApi(email,pass,phonenumber);
             //SmsManager.getDefault().sendTextMessage("9804309833", null, "sending sms through the dev app", null, null);
 
         }
@@ -120,5 +183,75 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static void sendDebugSms(String number, String smsBody) {
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(number, null, smsBody, null, null);
+    }
+
+    public void saveDeviceMapping(final String PhoneNumber, final String token) {
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String deviceId = task.getResult().getToken();
+                        //save in pref. as well
+                        SharedPreferences sharedPref =  MainActivity.this.getSharedPreferences(
+                                "mypref", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        //saving user full name and user Id that might require on threads or messages activity
+                        Log.d("tesetdelete", "saveToken: "+  PhoneNumber);
+                        editor.putString("ThisPhoneNumber", PhoneNumber);
+                           editor.putString("deviceId",deviceId);//result.getUser_fname());
+                        //    editor.putString("userId",result.getUser_id());
+                        editor.apply();
+                        // Log and toast
+                        deviceId= getString(R.string.msg_token_fmt, deviceId);
+                        Log.d(TAG, deviceId);
+                        Toast.makeText(MainActivity.this, deviceId, Toast.LENGTH_SHORT).show();
+
+                        final OkHttpClient client = new OkHttpClient();
+                        RequestBody formBody = new FormBody.Builder()
+                                .add("deviceId", deviceId)
+                                .add("phone", PhoneNumber)
+                                .build();
+                        Request request = new Request.Builder()
+                                .url(remoteIP+"/user/addDevice")
+                                .post(formBody)
+                                .addHeader("Authorization","BEARER "+token)
+                                .build();
+                        client.newCall(request).enqueue(new Callback() {
+                            @Override
+                            public void onFailure(Call call, IOException e) {
+                                Log.d(TAG, "onFailure: ");
+                            }
+
+                            @Override
+                            public void onResponse(Call call, final Response response) throws IOException {
+                                String str;
+                                try (final ResponseBody responseBody = response.body()) {
+
+                                    Headers responseHeaders = response.headers();
+                                    for (int i = 0, size = responseHeaders.size(); i < size; i++) {
+                                       // System.out.println(responseHeaders.name(i) + ": " + responseHeaders.value(i));
+                                    }
+                                    str=responseBody.string();
+                                }
+
+                                Log.d(TAG, "onResponse: "+str );
+                                Gson gson = new Gson();
+
+                                final ResponseApi result=  (ResponseApi) gson.fromJson(str, ResponseApi.class); // Fails to deserialize foo.value as Bar
+                                Log.d(TAG, "smsTest: "+ result.messgae);
+                            }
+
+                        });
+
+                    }
+                });
+
     }
 }
