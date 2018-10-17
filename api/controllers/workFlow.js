@@ -64,18 +64,18 @@ var getDevice = function (req,next) {
   Device
   .find({ phone: phoneNumber })
   .exec(function(err, device) {
-    console.log(device);
+    console.log(device[0]);
    next(device[0]);
   });
 };
 
 
-var ReceiveToGateway = function(req, next){
- console.log('getting useridfor this phone number.')
+var ReceiveToGateway = function(dev, next){
+ console.log('getting useridfor this phone number.',dev)
   Device
-  .find({deviceId:req})
+  .find({ deviceId : dev })
   .exec(function(err,device){
-      console.log(device);
+      console.log(device[0]);
        next(device[0]);
   });
 };
