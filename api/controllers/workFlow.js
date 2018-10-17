@@ -136,12 +136,12 @@ module.exports.receivedMessage = function(req,res){
               .then(result => {
                 console.log(user[0]);
                 res.status(201).json({
-                  data:{
-                    callback_webhook:user[0].callback_webhook,
-                    message:req.body.message,
-                    from:req.body.from,
-                    to:data.phone
-                  },
+                 
+                  callback_webhook:user[0].callback_webhook,
+                  textmessage:req.body.message,
+                  from:req.body.from,
+                  to:data.phone
+                  ,
                   message: "Message Received",
                   status: 200
                 });
