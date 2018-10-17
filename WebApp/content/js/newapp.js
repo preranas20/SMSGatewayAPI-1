@@ -101,6 +101,7 @@ function AppViewModel() {
                 //Write your code here
                 if(result.status==200){
                 //self.token(result.token);
+                console.log(result);
                self.APIKey( result.data.apiKey);
                 $.toast({ heading: 'Success',
                 text: result.message,
