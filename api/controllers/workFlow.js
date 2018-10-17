@@ -84,6 +84,7 @@ module.exports.receivedMessage = function(req,res){
   Device
   .findOne({ deviceId : dev })
   .exec(function(err,data){
+    console.log("error:",err);
     console.log(data);
     User.find({_id:data.user_id})
     .exec()
