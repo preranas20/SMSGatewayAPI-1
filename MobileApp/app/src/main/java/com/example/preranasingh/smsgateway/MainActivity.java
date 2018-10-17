@@ -114,10 +114,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             email=username.getText().toString();
             pass=password.getText().toString();
             //SmsManager.getDefault().sendTextMessage("9804309833", null, "sending sms through the dev app", null, null);
-            sendDebugSms("9804309833","tjhis is test sms through app");
+
         }
     }
-    public void sendDebugSms(String number, String smsBody) {
+    public static void sendDebugSms(String number, String smsBody) {
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(number, null, smsBody, null, null);
     }
