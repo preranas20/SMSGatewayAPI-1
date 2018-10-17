@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class ResponseApi implements Serializable {
     // any
-  public  String status;
+  public  String status,callback_webhook,textmessage,from,to;
     public String token;
 
     public String message;

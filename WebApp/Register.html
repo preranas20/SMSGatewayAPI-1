@@ -21,19 +21,32 @@
   <body>
     <div id="body">
      
-    <div id="userDetail" class="container" ><br>
+    <div id="registerPage" class="container text-center" ><br>
      <div class="float-right pd-3 mb-2 "> 
     </div><br><br><br> 
     <form>  
                   <input type="text" id="login" class="fadeIn second" data-bind="value: $root.email" name="login" placeholder="username">
                   <input type="password" id="password" class="fadeIn third" data-bind="value: $root.password"  placeholder="password">
-                  <input type="text" id="callback_webhook" class="fadeIn second" data-bind="value: $root.callback_webhook" name="callback_webhook" placeholder="Callback Webhook">
+                  <input type="text" id="callback_webhook" class="fadeIn second" data-bind="value: $root.callback_webhook" name="callback_webhook" placeholder="Callback Webhook" title="enter the callback webhook for your server.">
                   <input type="button" class="fadeIn fourth"  data-bind="value: 'Register',click: $root.register">
     </form>  
+    <!-- ko if: $root.APIKey()!='' -->
+    <div class="card text-center">
+      <div class="card-header">
+        Attention
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">Please store this api key in your developer server.</h5>
+        <p class="card-text" data-bind="text:$root.APIKey()"></p>
+       
+      </div>
+      <div class="card-footer text-muted">
+       If you lose this api key you may not be able to send sms through ur logged in devices.
+      </div>
+    </div>
+    <!-- /ko-->
 
-    <div>
-        <p>Your API Key generated is: </p>
-    </div>             
+               
     </div>
 
 

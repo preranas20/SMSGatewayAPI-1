@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         //    editor.putString("userId",result.getUser_id());
                         editor.apply();
                         // Log and toast
-                        deviceId= getString(R.string.msg_token_fmt, deviceId);
+                        //deviceId= getString(R.string.msg_token_fmt, deviceId);
                         Log.d(TAG, deviceId);
                         Toast.makeText(MainActivity.this, deviceId, Toast.LENGTH_SHORT).show();
 

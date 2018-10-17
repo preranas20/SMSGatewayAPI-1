@@ -15,11 +15,10 @@ module.exports.showDeveloperDetails = function(req, res){
     User
       .findById(id)
       .exec(function(err, user) {
-        res.status(200).json(
-        user
-       // {message:"Request successful",
-        //user:user,
-        //status:200}
+        res.status(200).json({
+          message:"Request successful",
+          status:200,
+        data:user}
         )
       });
   }
@@ -36,9 +35,11 @@ module.exports.showDevelopers = function(req, res){
     User
       .find({ role: 'developer' })
       .exec(function(err, user) {
-        res.status(200).json(
-        user
-       // {message:"Request successful",
+        res.status(200).json({
+          message:"Request successful",
+          status:200,
+        data:user}
+       // {
         //user:user,
         //status:200}
         )
@@ -108,10 +109,13 @@ module.exports.showLogs = function(req, res){
     });
   } else {
     Message
-      .find({deviceId: req.body.deviceId })
+      .find({user_id: id })
       .exec(function(err, message) {
-        res.status(200).json(
-        message
+        res.status(200).json({
+          message:"Request successful",
+          status:200,
+        data:message}
+        
        // {message:"Request successful",
         //user:user,
         //status:200}
