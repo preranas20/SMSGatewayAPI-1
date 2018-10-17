@@ -22,7 +22,16 @@ module.exports.SendToDevice= function(req, res){
  // console.log(phone);
   getDevice(phoneNumer,function(data){
 //this registration token is deviceID from the Device model
-
+var newmessage = new Message({
+  _id: new mongoose.Types.ObjectId(),
+   message: messageText,
+   date: Date.now(),
+   from: phoneNumer,
+   to:toPhoneNumber,
+   status:"DownStream",
+   user_id:data.user_id
+  // phone:req.body.phone
+ });
       var registrationToken =  data.deviceId;
       console.log('sending sms...');
 // See documentation on defining a message payload.
@@ -40,25 +49,12 @@ module.exports.SendToDevice= function(req, res){
       .then((response) => {
         // Response is a message ID string.
         console.log('Successfully sent message:', response);
-        const message = new Message({
-          _id: new mongoose.Types.ObjectId(),
-           message: messageText,
-           date: Date.now(),
-           from: phoneNumer,
-           to:toPhoneNumber,
-           status:"DownStream",
-           user_id:data.user_id
-          // phone:req.body.phone
-         });
-         message
+      
+        newmessage
            .save()
            .then(result => {
+            console.log("logging done");
             
-             res.status(201).json({
-              
-               message: "Message Logged",
-               status: 200
-             });
            })
             .catch(err => {
             console.log(err);
