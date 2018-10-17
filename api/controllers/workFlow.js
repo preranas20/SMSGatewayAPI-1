@@ -14,6 +14,7 @@ module.exports.SendToDevice= function(req, res){
   var messageText=req.body.messageText;
   var toPhoneNumber=req.body.toPhoneNumber;
  if(! admin.apps.length)
+
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://smsgateway-5d944.firebaseio.com"
@@ -66,6 +67,77 @@ var getDevice = function (req,next) {
     console.log(device);
    next(device[0]);
   });
+};
+
+
+var ReceiveToGateway = function(req, next){
+ console.log('getting useridfor this phone number.')
+  Device
+  .find({deviceId:deviceId})
+  .exec(function(err,device){
+      console.log(device[0]);
+       next(device[0]);
+  });
+};
+
+
+    
+module.exports.receivedMessage = function(req,res){
+  deviceId=req.body.deviceId;
+  console.log("Inside receivedMessage");
+  ReceiveToGateway(deviceId,function(data){
+  
+
+  User.find({_id:data.user_id})
+    .exec()
+    .then(user => {
+      if (user.length < 1) {
+        return res.status(401).json({
+          message: "User Not Found",
+          status: 401
+        });
+      }
+     else {
+          const message = new Message({
+             _id: new mongoose.Types.ObjectId(),
+              message: req.body.message,
+              date: Date.now(),
+              from: req.body.from,
+              to: data.phone,
+              status:"Upstream",
+              user_id:data.user_id
+             // phone:req.body.phone
+            });
+            message
+              .save()
+              .then(result => {
+                console.log(user);
+                res.status(201).json({
+                  data:{
+                    callback_webhook:user[0].callback_webhook,
+                    message:req.body.message,
+                    from:req.body.from,
+                    to:data.phone
+                  },
+                  message: "Message Received",
+                  status: 200
+                });
+              })
+               .catch(err => {
+               console.log(err);
+               res.status(500).json({
+                error: err,
+                status: 500
+              });
+             });
+         
+        }
+
+    })
+   
+    });
+
+
 };
 
 

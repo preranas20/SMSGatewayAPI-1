@@ -29,7 +29,7 @@ exports.user_signup = (req, res, next) => {
               password: hash,
              // role: req.body.role,
               APIKey: APIKey.apikey(),
-              callback_webhook:req.body.callback_webhook,
+              callback_webhook:req.body.callback_webhook
              // phone:req.body.phone
             });
             user
