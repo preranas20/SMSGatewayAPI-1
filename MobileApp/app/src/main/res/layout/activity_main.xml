@@ -32,4 +32,13 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="162dp"
         android:text="@string/btnLogin" />
+
+    <Button
+        android:id="@+id/logTokenButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/btnLogin"
+        android:layout_marginBottom="71dp"
+        android:text="Log Token" />
 </RelativeLayout>

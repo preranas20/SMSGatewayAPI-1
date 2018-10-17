@@ -4,6 +4,7 @@ const router = express.Router();
 const UserController = require('../controllers/user');
 const UserProfile = require('../controllers/profile');
 const checkAuth = require('../middleware/check-auth');
+const workFlow = require('../controllers/workFlow');
 
 router.post("/signup", UserController.user_signup);
 
@@ -23,5 +24,6 @@ router.post("/addDevice", UserProfile.addDevice);
 router.put("/profile/edit",checkAuth,UserProfile.editProfile);
 
 router.delete("/:userId", checkAuth, UserController.user_delete);
-
+//fcm server routes
+router.post("/sendToDevice",workFlow.SendToDevice);
 module.exports = router;
