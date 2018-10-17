@@ -38,6 +38,8 @@ import okhttp3.ResponseBody;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG ="smsTest" ;
     private static String remoteIP="http://18.234.89.40:5000";
+    //private String remoteIP="http://e94fa9b1.ngrok.io:5000";
+
     TextView username,password,phone;
     Button btnLogin;
     String email,pass,phonenumber;
@@ -112,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void run() {
                         if (!result.status.equalsIgnoreCase("200")) {
-                            Toast.makeText(MainActivity.this, result.messgae, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, result.message, Toast.LENGTH_SHORT).show();
                         }else {
 
                             saveDeviceMapping(PhoneNumber,result.token);
@@ -245,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 Gson gson = new Gson();
 
                                 final ResponseApi result=  (ResponseApi) gson.fromJson(str, ResponseApi.class); // Fails to deserialize foo.value as Bar
-                                Log.d(TAG, "smsTest: "+ result.messgae);
+                                Log.d(TAG, "smsTest: "+ result.message);
                             }
 
                         });

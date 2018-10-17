@@ -35,6 +35,7 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
 
     private Listener listener;
     private String remoteIP="http://18.234.89.40:5000";
+    //private String remoteIP="http://e94fa9b1.ngrok.io:5000";
 
     public SmsBroadcastReceiver() {
 
@@ -92,6 +93,7 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
         Request request = new Request.Builder()
                 .url(remoteIP+"/user/recivedToGateway")
                 .post(formBody)
+                .header("Content-Type","application/json")
                 .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -115,7 +117,7 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
                 Gson gson = new Gson();
 
                 final ResponseApi result=  (ResponseApi) gson.fromJson(str, ResponseApi.class); // Fails to deserialize foo.value as Bar
-                Log.d(TAG, "smsTest: "+ result.messgae);
+                Log.d(TAG, "smsTest: "+ result.message);
             }
 
         });

@@ -11,6 +11,6 @@ public class ResponseApi implements Serializable {
   public  String status;
     public String token;
 
-    public String messgae;
+    public String message;
     public String data;
 }
