@@ -73,7 +73,7 @@ var getDevice = function (req,next) {
 var ReceiveToGateway = function(req, next){
  console.log('getting useridfor this phone number.')
   Device
-  .find({deviceId:deviceId})
+  .find({deviceId:req})
   .exec(function(err,device){
       console.log(device[0]);
        next(device[0]);
@@ -111,7 +111,7 @@ module.exports.receivedMessage = function(req,res){
             message
               .save()
               .then(result => {
-                console.log(user);
+                console.log(user[0]);
                 res.status(201).json({
                   data:{
                     callback_webhook:user[0].callback_webhook,
