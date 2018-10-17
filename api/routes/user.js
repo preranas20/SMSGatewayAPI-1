@@ -16,8 +16,8 @@ router.get("/details",checkAuth, UserProfile.showDeveloperDetails);
 router.get("/devloperlist",checkAuth, UserProfile.showDevelopers);
 router.post("/showlogs",checkAuth, UserProfile.showLogs);
 router.get("/showdevices",checkAuth, UserProfile.showDevices);
-router.post("/recivedToGateway",workFlow.receivedMessage);
-router.post("/receivedForDeveloper",UserProfile.receivedForDeveloper);
+router.post("/recivedToGateway",workFlowController.receivedMessage);
+;
 //To test stubs:
 router.post("/addMessage", UserProfile.addMessage);
 router.post("/addDevice", UserProfile.addDevice);

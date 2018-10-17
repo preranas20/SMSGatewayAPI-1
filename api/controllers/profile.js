@@ -145,70 +145,7 @@ const device = new Device({
   };
 
 
-module.exports.receivedMessage = function(req, res){
-  Device.find({phone:req.body.to},function(err,device){
-    if(err){
-      res.status(401).json({
-      "message" : "Request Unsuccessful"
-     });  
-    }else{
-       if(device[0].APIKey==req.body.APIKey){
-         return res.status(200).json({
-            message: "Request successful",
-            status: 200
-          });
-         var obj = {
-          callback_webhook:device[0].callback_webhook,
-          to:req.body.to,
-          from:req.body.from,
-          message:req.body.message,
-          APIKey:req.body.APIKey
-         };
-         receivedForDeveloper(obj,response);
-       }
 
-    }
-  });
-};
-    
-module.exports.receivedForDeveloper = function(req,res){
-  const url=req.body.callback_webhook;
-  User.find({callback_webhook:url},function(err,user){
-      if(err){
-        res.status(401).json({
-          "message" : "Request Unsuccessful"
-       });  
-      }else{
-        if(user[0].APIKey==req.body.APIKey){
-         const message = new Message({
-              _id: new mongoose.Types.ObjectId(),
-              message: req.body.message,
-              date: Date.now(),
-              from: req.body.from,
-              to: req.body.to,
-              status: "Received"
-            });           
-         message.save()
-              .then(result => {
-                console.log(result);
-                res.status(201).json({
-                  message: "Message created",
-                  status: 200
-                });
-              })
-              .catch(err => {
-                console.log(err);
-                res.status(500).json({
-                  error: err,
-                  status: 500
-                });
-              });
-        }
-      }
-  });
-      
-
-};
   
 
 

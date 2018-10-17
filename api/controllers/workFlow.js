@@ -73,24 +73,13 @@ var getDevice = function (req,next) {
 var ReceiveToGateway = function(req, next){
  console.log('getting useridfor this phone number.')
   Device
-  .find({deviceId:req.deviceId})
+  .find({deviceId:deviceId})
   .exec(function(err,device){
       console.log(device[0]);
        next(device[0]);
   });
 };
 
-var getDevice = function (req,next) {
-  console.log('getting device for this phone number.')
-  var phoneNumber= req;
-  console.log(phoneNumber);
-  Device
-  .find({ phone: phoneNumber })
-  .exec(function(err, device) {
-    console.log(device);
-   next(device[0]);
-  });
-};
 
     
 module.exports.receivedMessage = function(req,res){
@@ -108,18 +97,13 @@ module.exports.receivedMessage = function(req,res){
           status: 401
         });
       }
-     if (err) {
-          return res.status(401).json({
-            message: "Request Failed",
-            status: 401
-          });
-        }
-        else {
+     else {
           const message = new Message({
+             _id: new mongoose.Types.ObjectId(),
               message: req.body.message,
-              date: new Date().toString().replace(/T/, ':').replace(/\.\w*/, ''),
+              date: Date.now(),
               from: req.body.from,
-              to: req.body.deviceId,
+              to: data.phone,
               status:"Upstream",
               user_id:data.user_id
              // phone:req.body.phone
@@ -129,26 +113,28 @@ module.exports.receivedMessage = function(req,res){
               .then(result => {
                 console.log(user);
                 res.status(201).json({
-                  data:{callback_webhook:user[0].callback_webhook},
+                  data:{
+                    callback_webhook:user[0].callback_webhook,
+                    message:req.body.message,
+                    from:req.body.from,
+                    to:data.phone
+                  },
                   message: "Message Received",
                   status: 200
                 });
               })
+               .catch(err => {
+               console.log(err);
+               res.status(500).json({
+                error: err,
+                status: 500
+              });
+             });
          
         }
-        res.status(401).json({
-          message: "Request failed",
-          status: 401
-        });
-      
+
     })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({
-        error: err,
-        status: 500
-      });
-    });
+   
     });
 
 
