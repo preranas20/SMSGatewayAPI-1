@@ -2,10 +2,10 @@
 
 function AppViewModel() {
     var self= this;
-    var qrcode = new QRCode("qrcode");
+   // var qrcode = new QRCode("qrcode");
     self.email=ko.observable('');
     self.password=ko.observable('');
-    self.urlIP=ko.observable('http://18.223.110.166:5000');
+    self.urlIP=ko.observable('http://localhost:5000');
     self.newname=ko.observable('ankit');
     self.newemail=ko.observable('ak@a.com');
     self.newpassword=ko.observable('a');
@@ -17,6 +17,10 @@ function AppViewModel() {
         eraseCookie("token");
           self.token(null);
         window.location.reload();
+    }
+
+    self.registerclick=function(){
+        window.location="Register.html";
     }
     self.makeQRCode =function (params) {
         qrcode.makeCode(self.newemail()+"_SEPERATOR_"+self.newpassword());
@@ -61,6 +65,51 @@ function AppViewModel() {
             error:
             function(result) {
                 //Write your code here
+                $.toast({heading:'error',text:result.responseJSON.message,icon:'error'});
+                }
+        
+      });
+        // .done(function( data ) {
+        //   alert( "welcome your token is = : " + data.token );
+        // });
+
+    }
+
+
+    self.register = function() {
+      
+    $.ajax({
+        method: "POST",
+        contentType: 'application/json',
+        data: JSON.stringify({
+            email: self.email(),
+            password:self.password() }),
+            callback_webhook:self.callback_webhook,
+            url: self.urlIP()+"/user/signup",
+           
+            success: function(result) {
+                //Write your code here
+                if(result.status==200){
+                //self.token(result.token);
+                
+                $.toast({ heading: 'Success',
+                text: result.message,
+                  showHideTransition: 'slide',
+                icon: 'success'});
+                window.login="index.html";                
+                }
+                else{
+                    if(result.status==200 )
+                    $.toast({heading:'error',text:'Invalid User only admin is allowed to use this portal.', icon: 'error'});
+                    else
+                    $.toast({heading:'error',text:result.responseJSON.message,icon:'error'});
+               
+                }
+                },
+            error:
+            function(result) {
+                //Write your code here
+
                 $.toast({heading:'error',text:result.responseJSON.message,icon:'error'});
                 }
         

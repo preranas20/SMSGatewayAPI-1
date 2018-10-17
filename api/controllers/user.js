@@ -27,10 +27,10 @@ exports.user_signup = (req, res, next) => {
               _id: new mongoose.Types.ObjectId(),
               email: req.body.email,
               password: hash,
-              role: req.body.role,
+             // role: req.body.role,
               APIKey: APIKey.apikey(),
               callback_webhook:req.body.callback_webhook,
-              phone:req.body.phone
+             // phone:req.body.phone
             });
             user
               .save()

@@ -7,7 +7,7 @@ const deviceSchema = mongoose.Schema({
     },
     user_id:{
     	type:String
-    }.
+    },
     phone:{
     	type:String
     }
