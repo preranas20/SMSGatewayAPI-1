@@ -72,24 +72,20 @@ var getDevice = function (req,next) {
 
 var ReceiveToGateway = function(dev, next){
  console.log('getting useridfor this phone number.',dev)
-  Device
-  .findOne({ deviceId : dev })
-  .exec(function(err,device){
-      console.log(device);
-       next(device);
-  });
+ 
 };
 
 
     
 module.exports.receivedMessage = function(req,res){
-  var deviceId=req.body.deviceId;
-  console.log(deviceId);
+  var dev=req.body.deviceId;
+  console.log(dev);
   console.log("Inside receivedMessage");
-  ReceiveToGateway(deviceId,function(data){
-  
-
-  User.find({_id:data.user_id})
+  Device
+  .findOne({ deviceId : dev })
+  .exec(function(data){
+    console.log(data);
+    User.find({_id:data.user_id})
     .exec()
     .then(user => {
       if (user.length < 1) {
