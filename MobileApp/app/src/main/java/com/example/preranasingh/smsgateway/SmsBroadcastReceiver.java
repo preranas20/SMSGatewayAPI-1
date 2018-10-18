@@ -34,8 +34,8 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
     private static final String TAG = "SmsBroadcastReceiver";
 
     private Listener listener;
-    private String remoteIP="http://18.234.89.40:5000";
-    //private String remoteIP="http://e94fa9b1.ngrok.io:5000";
+   // private String remoteIP="http://18.234.89.40:5000";
+    private String remoteIP="http://18.223.110.166:5000";
 
     public SmsBroadcastReceiver() {
 

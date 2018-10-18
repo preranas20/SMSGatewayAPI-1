@@ -14,6 +14,7 @@ import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,8 +38,8 @@ import okhttp3.ResponseBody;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG ="smsTest" ;
-    private static String remoteIP="http://18.234.89.40:5000";
-    //private String remoteIP="http://e94fa9b1.ngrok.io:5000";
+   // private static String remoteIP="http://18.234.89.40:5000";
+    private String remoteIP="http://18.223.110.166:5000"; //ankit ec2
 
     TextView username,password,phone;
     Button btnLogin;
@@ -55,6 +56,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         phone= findViewById(R.id.editPhone);
         btnLogin=findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(this);
+
+        SharedPreferences sharedPref = getSharedPreferences(
+                "mypref", Context.MODE_PRIVATE);
+       String phonen = sharedPref.getString("ThisPhoneNumber",null);
+if (    phonen!=null || !phonen.isEmpty()){
+    username.setVisibility(View.INVISIBLE);
+    password.setVisibility(View.INVISIBLE);
+    phone.setVisibility(View.INVISIBLE);
+    btnLogin.setVisibility(View.INVISIBLE);
+    TextView tex= findViewById(R.id.textView);
+    tex.setText("SMS gateway is running!");
+}
 
         if ( !isSmsPermissionGranted())
             requestReadAndSendSmsPermission();
@@ -116,7 +129,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (!result.status.equalsIgnoreCase("200")) {
                             Toast.makeText(MainActivity.this, result.message, Toast.LENGTH_SHORT).show();
                         }else {
-
+                          EditText username=findViewById(R.id.editUsername);
+                      EditText      password=findViewById(R.id.editPassword);
+                            EditText    phone= findViewById(R.id.editPhone);
+                            username.setVisibility(View.INVISIBLE);
+                            password.setVisibility(View.INVISIBLE);
+                            phone.setVisibility(View.INVISIBLE);
+                            Button btnLogin = findViewById(R.id.btnLogin);
+                            phone.setVisibility(View.INVISIBLE);
+                            TextView tex= findViewById(R.id.textView);
+                            tex.setText("SMS gateway is running!");
                             saveDeviceMapping(PhoneNumber,result.token);
 
                         }

@@ -5,7 +5,7 @@ function AppViewModel() {
     
     self.email=ko.observable('ak@a.com');
     self.password=ko.observable('a');
-    self.urlIP=ko.observable('http://18.234.89.40:5000');
+    self.urlIP=ko.observable('http://18.223.110.166:5000');
     
     self.newname=ko.observable('ankit');
     self.newemail=ko.observable('ak@a.com');
