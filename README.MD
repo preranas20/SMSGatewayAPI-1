@@ -3,6 +3,8 @@
 Abstract:
 SMS Gateway app. This app focuses on developing a mobile SMS gateway using an Android app which is deployed to enable the sending and receiving of SMS. The mobile app is to be deployed on an Android phone and it should notify a server when a SMS is received and indicate the sender, receiver, and message content. The server app should enable the addition of new devices (phones), show a log of the received messages, and allow the registration of callback urls that are called when messages are received from a specific android gateway app. This app is similar to Twilio but using android app and a server instead of Twilio. In addition, the server should be able to communicate with the android app and request it sends a messages to a specific receiver. 
 
+Video Link: to regsiter new User to web app - https://youtu.be/xf-hrBz4uUQ
+
 # Description of the app and functionalities:
 
 To create a sms gateway using two components a gateway server and a gateway app. For the developer who wants utilize this gateway.
