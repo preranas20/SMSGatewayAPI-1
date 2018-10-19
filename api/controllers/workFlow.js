@@ -185,20 +185,12 @@ headers:{
       //'Connection': 'keep-alive'
 }
   };
-  var request = require('request');
-  request(user.callback_webhook, function (error, response, body) {
-    console.log('error:', error); // Print the error if one occurred
-    console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-    console.log('body:', body); // Print the HTML for the Google homepage.
-  });
 
 const postRequest = http.request(options, function(response) {
   response.setEncoding('utf8');
   response.on('data',function (chunk)  {
+    console.log('on data');
       console.log(`BODY: ${chunk}`);
-  });
-  response.on('end', function(){
-      console.log('sent back to developer.');
       const message = new Message({
         _id: new mongoose.Types.ObjectId(),
          message: req.body.message,
@@ -230,6 +222,11 @@ const postRequest = http.request(options, function(response) {
            status: 500
          });
         });
+  });
+  response.on('end', function(){
+      console.log('sent back to developer.');
+      console.log('on end');
+    
   });
   postRequest.on('error', (e) => {
   console.error(`problem with request: ${e.message}`);
