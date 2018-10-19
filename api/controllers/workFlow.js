@@ -21,8 +21,8 @@ var apiKey =req.body.apiKey;
   });
  // console.log(phone);
  validateUser(apiKey,function name(err,params) {
-   console.log(err);
-   console.log('userValue', params);
+   //console.log(err);
+   //console.log('userValue', params);
    if(err){
    console.log('Error sending message:', error);
    res.status(500).json({
@@ -39,8 +39,23 @@ var apiKey =req.body.apiKey;
     return;
   }
 
-  getDevice(phoneNumer,params._id,function(data){
+  getDevice(phoneNumer,params._id,function(err1,data){
 //this registration token is deviceID from the Device model
+if(err1){
+  console.log('Error sending message:', error);
+  res.status(500).json({
+    message: err,
+    status: 500
+  });
+  return;
+ }
+ if(data==null ){
+  res.status(500).json({
+    message: "phone number not associated with this developer. Incorrect API key",
+    status: 500
+  }); 
+  return;
+}
 var newmessage = new Message({
   _id: new mongoose.Types.ObjectId(),
    message: messageText,
@@ -111,7 +126,7 @@ var getDevice = function (req,id,next) {
   .find({$and:[{ phone: phoneNumber },{ user_id: id }]})
   .exec(function(err, device) {
     console.log(device[0]);
-   next(device[0]);
+   next(err,device[0]);
   });
 };
 var validateUser= function(key,next) {
