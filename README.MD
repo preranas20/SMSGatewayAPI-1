@@ -3,7 +3,7 @@
 Abstract:
 SMS Gateway app. This app focuses on developing a mobile SMS gateway using an Android app which is deployed to enable the sending and receiving of SMS. The mobile app is to be deployed on an Android phone and it should notify a server when a SMS is received and indicate the sender, receiver, and message content. The server app should enable the addition of new devices (phones), show a log of the received messages, and allow the registration of callback urls that are called when messages are received from a specific android gateway app. This app is similar to Twilio but using android app and a server instead of Twilio. In addition, the server should be able to communicate with the android app and request it sends a messages to a specific receiver. 
 
-Video Link: to regsiter new User to web app - https://youtu.be/xf-hrBz4uUQ
+Video Link: https://www.youtube.com/watch?v=Xsu4XHD3kM8&feature=youtu.be
 
 # Description of the app and functionalities:
 
@@ -47,18 +47,37 @@ Messages log schema: ID, from, to, date, message, status
 
 | Task | Team member |
 | --- | --- |
-| gateway server app - login and signup | snigdha |
-| gateway server app - showdevelopers | snigdha |
-| gateway server app - showdeveloperdetail | snigdha |
-| gateway server app - showlogs | snigdha |
-| gateway server api- gatewayapi\send (from developer to gateway server) | ankit |
-| gateway server api- gatewayapi\SendMessage (from server to mobile) | ankit |
-| gateway server api- gatewayapi\recievedMessage (from mobile to server) | prerana |
-| gateway server api- gatewayapi\toCallBackURL (from server to developer) | prerana |
-| gateway server api- gatewaypi\createUUID | prerna |
-| mobile app- login | prerana |
-| mobile app- get push notification from server | ankit | 
-| mobile app- send and read sms | ankit |
-| mobole app- get phone numbner | ankit |
+| gateway server app - login and signup | snigdha |Completed|
+| gateway server app - showdevelopers | snigdha |Completed|
+| gateway server app - showdeveloperdetail | snigdha |Completed|
+| gateway server app - showlogs | snigdha |Completed|
+| gateway server api- gatewayapi\SendMessage (from server to mobile) | ankit |Completed|
+| gateway server api- gatewayapi\addDevice(from server to mobile) | ankit |Completed|
+| gateway server api- gatewayapi\recievedMessage (from mobile to server) | prerana |Completed|
+| gateway server api- gatewayapi\addMessage (from mobile to server) | prerana |Completed|
+| gateway server api- gatewaypi\createAPIKey | prerana |Completed|
+| mobile app- login | prerana |Completed|
+| mobile app- get push notification from server | ankit | Completed|
+| mobile app- send and read sms | ankit |Completed|
+| mobile app- get phone numbner | ankit |Android restrictes|
+| Web App UI - login and signup | ankit|Completed|
+| Web App UI - showDevelopers | ankit|Completed|
+| Web App UI - showMessageLogs| ankit|Completed|
+|Running sms in background|ankit|Completed|
+
+# Bug List
+| Task | Team member |
+| --- | --- |
+| Client side:Back button and function after registration | snigdha |Completed|
+| Client side:Registration and login - empty fields should throw error | snigdha |Completed|
+| Mobile login required validation for name pass and number | Prerana |Completed|
+| Validate getsms request with apikey | ankit |Completed|
+| Developer server sendSms | Prerana |Completed|
+| Developer server getSms| Ankit |Incomplete|
+
+
+
+
+
 
 
