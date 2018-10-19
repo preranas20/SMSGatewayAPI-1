@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferences sharedPref = getSharedPreferences(
                 "mypref", Context.MODE_PRIVATE);
        String phonen = sharedPref.getString("ThisPhoneNumber",null);
-if (    phonen!=null || !phonen.isEmpty()){
+        Log.d(TAG, "onCreate: phonen "+phonen );
+if (    phonen!=null && !phonen.isEmpty()){
     username.setVisibility(View.INVISIBLE);
     password.setVisibility(View.INVISIBLE);
     phone.setVisibility(View.INVISIBLE);
