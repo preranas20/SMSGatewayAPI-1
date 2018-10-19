@@ -31,8 +31,15 @@ var apiKey =req.body.apiKey;
    });
    return;
   }
+  if(params==null ){
+    res.status(500).json({
+      message: "not a registered developer. Incorrect API key",
+      status: 500
+    }); 
+    return;
+  }
 
-  getDevice(phoneNumer,function(data){
+  getDevice(phoneNumer,params._id,function(data){
 //this registration token is deviceID from the Device model
 var newmessage = new Message({
   _id: new mongoose.Types.ObjectId(),
@@ -96,12 +103,12 @@ var newmessage = new Message({
   
 };
 
-var getDevice = function (req,next) {
+var getDevice = function (req,id,next) {
   console.log('getting device for this phone number.')
   var phoneNumber= req;
   console.log(phoneNumber);
   Device
-  .find({ phone: phoneNumber })
+  .find({$and:[{ phone: phoneNumber },{ user_id: id }]})
   .exec(function(err, device) {
     console.log(device[0]);
    next(device[0]);
