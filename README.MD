@@ -45,8 +45,8 @@ Messages log schema: ID, from, to, date, message, status
 
 # A table that lists the different tasks and the name of the team member who is going to work on this task.
 
-| Task | Team member |
-| --- | --- |
+| Task | Team member |Status|
+| --- | --- |---|
 | gateway server app - login and signup | snigdha |Completed|
 | gateway server app - showdevelopers | snigdha |Completed|
 | gateway server app - showdeveloperdetail | snigdha |Completed|
@@ -66,8 +66,8 @@ Messages log schema: ID, from, to, date, message, status
 |Running sms in background|ankit|Completed|
 
 # Bug List
-| Task | Team member |
-| --- | --- |
+| Task | Team member |Status|
+| --- | --- | --- |
 | Client side:Back button and function after registration | snigdha |Completed|
 | Client side:Registration and login - empty fields should throw error | snigdha |Completed|
 | Mobile login required validation for name pass and number | Prerana |Completed|
