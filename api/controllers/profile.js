@@ -102,6 +102,7 @@ message.save()
 
 //show message log details for device
 module.exports.showLogs = function(req, res){
+  const userId= req.body.user_id;
   const id=req.userData.userId;
   if (!id) {
     res.status(401).json({
@@ -109,7 +110,7 @@ module.exports.showLogs = function(req, res){
     });
   } else {
     Message
-      .find({user_id: id })
+      .find({user_id: userId? userId:id })
       .exec(function(err, message) {
         res.status(200).json({
           message:"Request successful",
