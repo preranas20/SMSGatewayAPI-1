@@ -63,7 +63,7 @@ Messages log schema: ID, from, to, date, message, status
 | Web App UI - login and signup | ankit|Completed|
 | Web App UI - showDevelopers | ankit|Completed|
 | Web App UI - showMessageLogs| ankit|Completed|
-|Running sms in background|ankit|Completed|
+|Running sms in background|ankit|Android Restricts|
 
 # Bug List
 | Task | Team member |Status|
