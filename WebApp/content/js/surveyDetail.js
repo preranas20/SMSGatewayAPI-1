@@ -78,8 +78,8 @@ function AppViewModel() {
             contentType: 'application/json',
             headers: {"Authorization": "BEARER "+readCookie('token')},
             data: JSON.stringify({
-                _id: readCookie("uid"),
-               surveyId: readCookie("sid") }),
+                user_id: readCookie("uid"),
+              
                 url: self.urlIP()+ "/user/showlogs",
                
                 success: function(result) {

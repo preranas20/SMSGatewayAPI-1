@@ -45,7 +45,7 @@ var newmessage = new Message({
   // phone:req.body.phone
  });
       var registrationToken =  data.deviceId;
-      console.log('sending sms...');
+      console.log('sending sms to mobile...');
 // See documentation on defining a message payload.
       var message = {
         notification: {
