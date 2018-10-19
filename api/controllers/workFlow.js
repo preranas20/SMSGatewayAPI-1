@@ -3,7 +3,7 @@ const http = require('http');
 const User = require("../models/user");
 const Device=require("../models/device");
 const Message=require("../models/message");
-var URL = require('url-parse');
+//var URL = require('url-parse');
 // fcm server 
 var admin = require('firebase-admin');
 var serviceAccount = require('../AccountKey/smsgateway-5d944-firebase-adminsdk-zbyn3-0ffa63630d.json');
@@ -174,20 +174,23 @@ const postData = JSON.stringify({
 phone: req.body.from,
 messageText:req.body.message});
 
-var parsedUrl = URL(user.callback_webhook);
+//var parsedUrl = URL(user.callback_webhook);
 
 
 const options = {
-hostname:parsedUrl.host,
-port:parsedUrl.port,
-path:parsedUrl.pathname,
+  url:user.callback_webhook,
 method:'POST',
 headers:{
   'content-type': 'application/json'
       //'Connection': 'keep-alive'
 }
   };
-
+  var request = require('request');
+  request(user.callback_webhook, function (error, response, body) {
+    console.log('error:', error); // Print the error if one occurred
+    console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+    console.log('body:', body); // Print the HTML for the Google homepage.
+  });
 
 const postRequest = http.request(options, function(response) {
   response.setEncoding('utf8');
@@ -215,8 +218,7 @@ const postRequest = http.request(options, function(response) {
              callback_webhook:user[0].callback_webhook,
              textmessage:req.body.message,
              from:req.body.from,
-             to:data.phone
-             ,
+             to:data.phone,
              message: "Message Received",
              status: 200
            });
