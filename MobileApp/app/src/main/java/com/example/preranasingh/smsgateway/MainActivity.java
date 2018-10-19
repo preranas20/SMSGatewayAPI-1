@@ -137,7 +137,7 @@ if (    phonen!=null && !phonen.isEmpty()){
                             password.setVisibility(View.INVISIBLE);
                             phone.setVisibility(View.INVISIBLE);
                             Button btnLogin = findViewById(R.id.btnLogin);
-                            phone.setVisibility(View.INVISIBLE);
+                            btnLogin.setVisibility(View.INVISIBLE);
                             TextView tex= findViewById(R.id.textView);
                             tex.setText("SMS gateway is running!");
                             saveDeviceMapping(PhoneNumber,result.token);
