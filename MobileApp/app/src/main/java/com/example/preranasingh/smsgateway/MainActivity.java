@@ -221,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static void sendDebugSms(String number, String smsBody) {
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(number, null, smsBody, null, null);
+        Log.d(TAG, "sendDebugSms: sending sms");;
     }
 
     public void saveDeviceMapping(final String PhoneNumber, final String token) {
