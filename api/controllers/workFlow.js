@@ -191,41 +191,12 @@ const postRequest = http.request(options, function(response) {
   response.on('data',function (chunk)  {
     console.log('on data');
       console.log(`BODY: ${chunk}`);
-      const message = new Message({
-        _id: new mongoose.Types.ObjectId(),
-         message: req.body.message,
-         date: Date.now(),
-         from: req.body.from,
-         to: data.phone,
-         status:"Upstream",
-         user_id:data.user_id
-        // phone:req.body.phone
-       });
-       message
-         .save()
-         .then(result => {
-           console.log(user[0]);
-           res.status(201).json({
-            
-             callback_webhook:user[0].callback_webhook,
-             textmessage:req.body.message,
-             from:req.body.from,
-             to:data.phone,
-             message: "Message Received",
-             status: 200
-           });
-         })
-          .catch(err => {
-          console.log(err);
-          res.status(500).json({
-           error: err,
-           status: 500
-         });
-        });
+      
   });
   response.on('end', function(){
       console.log('sent back to developer.');
       console.log('on end');
+      
     
   });
   postRequest.on('error', (e) => {
