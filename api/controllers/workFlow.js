@@ -170,48 +170,58 @@ module.exports.receivedMessage = function(req,res){
 //copy from here
 
 console.log("i am hitting my method");
-const postData = JSON.stringify({
+const postData = {
 phone: req.body.from,
-messageText:req.body.message});
+messageText:req.body.message};
 
 //var parsedUrl = URL(user.callback_webhook);
-
-
-const options = {
-  url:user.callback_webhook,
-method:'POST',
-headers:{
-  'content-type': 'application/json'
-      //'Connection': 'keep-alive'
+var postrequest = require('request')
+var options = {
+  method: 'post',
+  body: postData,
+  json: true,
+  url: user[0].callback_webhook
 }
-  };
-
-const postRequest = http.request(options, function(response) {
-  response.setEncoding('utf8');
-  response.on('data',function (chunk)  {
-    console.log('on data');
-      console.log(`BODY: ${chunk}`);
-      
-  });
-  response.on('end', function(){
-      console.log('sent back to developer.');
-      console.log('on end');
-      
-    
-  });
-  postRequest.on('error', (e) => {
-  console.error(`problem with request: ${e.message}`);
-  });
- 
-  });
-
-
-// write data to request body
-  postRequest.write(postData);
-  
-  postRequest.end();
-
-
+postrequest(options, function (err, res, body) {
+  if (err) {
+    console.error('error posting json: ', err)
+    res.status(500).json({
+      error: err,
+      status: 500
+    });
+  }
+  const message = new Message({
+    _id: new mongoose.Types.ObjectId(),
+     message: req.body.message,
+     date: Date.now(),
+     from: req.body.from,
+     to: data.phone,
+     status:"Upstream",
+     user_id:data.user_id
+    // phone:req.body.phone
+   });
+   message
+     .save()
+     .then(result => {
+       console.log(user[0]);
+       res.status(201).json({
+        
+         callback_webhook:user[0].callback_webhook,
+         textmessage:req.body.message,
+         from:req.body.from,
+         to:data.phone,
+         message: "Message Received",
+         status: 200
+       });
+     })
+      .catch(err => {
+      console.log(err);
+      res.status(500).json({
+       error: err,
+       status: 500
+     });
+    });
+})
   //till here 
 
         
