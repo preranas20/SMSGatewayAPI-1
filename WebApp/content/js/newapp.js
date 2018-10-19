@@ -36,7 +36,20 @@ function AppViewModel() {
         $('#eyeIcon').toggleClass('fa-eye fa-eye-slash');
     }
     self.login = function() {
-      
+
+      var email= self.email();
+      var password= self.password();
+    if(email=="") {
+      $.toast({heading:'error',text:'Username is required',icon:'error'});
+      return
+
+  }
+    if(password=="") {
+      $.toast({heading:'error',text:'Password is required',icon:'error'});
+      return
+
+  }
+
     $.ajax({
         method: "POST",
         contentType: 'application/json',
@@ -86,6 +99,19 @@ function AppViewModel() {
 
 
     self.register = function() {
+
+        var email= self.email();
+      var password= self.password();
+    if(email=="") {
+      $.toast({heading:'error',text:'Username is required',icon:'error'});
+      return
+
+  }
+    if(password=="") {
+      $.toast({heading:'error',text:'Password is required',icon:'error'});
+      return
+
+  }
       
     $.ajax({
         method: "POST",
