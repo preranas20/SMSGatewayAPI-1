@@ -102,7 +102,8 @@ message.save()
 
 //show message log details for device
 module.exports.showLogs = function(req, res){
-  const userId= req.body.user_id;
+  var userId= req.body.user_id;
+  console.log(userId);
   const id=req.userData.userId;
   if (!id) {
     res.status(401).json({
