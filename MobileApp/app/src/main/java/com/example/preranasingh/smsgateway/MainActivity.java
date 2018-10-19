@@ -2,14 +2,13 @@ package com.example.preranasingh.smsgateway;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
@@ -61,14 +60,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 "mypref", Context.MODE_PRIVATE);
        String phonen = sharedPref.getString("ThisPhoneNumber",null);
         Log.d(TAG, "onCreate: phonen "+phonen );
-if (    phonen!=null && !phonen.isEmpty()){
-    username.setVisibility(View.INVISIBLE);
-    password.setVisibility(View.INVISIBLE);
-    phone.setVisibility(View.INVISIBLE);
-    btnLogin.setVisibility(View.INVISIBLE);
-    TextView tex= findViewById(R.id.textView);
-    tex.setText("SMS gateway is running!");
-}
+    if (    phonen!=null && !phonen.isEmpty()){
+       username.setVisibility(View.INVISIBLE);
+       password.setVisibility(View.INVISIBLE);
+       phone.setVisibility(View.INVISIBLE);
+       btnLogin.setVisibility(View.INVISIBLE);
+       TextView tex= findViewById(R.id.textView);
+       tex.setText("SMS gateway is running!");
+     }
+
 
         if ( !isSmsPermissionGranted())
             requestReadAndSendSmsPermission();
@@ -200,8 +200,21 @@ if (    phonen!=null && !phonen.isEmpty()){
             pass=password.getText().toString();
 
             phonenumber = "+1"+phone.getText().toString();
-            loginApi(email,pass,phonenumber);
-            //SmsManager.getDefault().sendTextMessage("9804309833", null, "sending sms through the dev app", null, null);
+            if(email.isEmpty())
+            {
+                username.setError("Field cannot be empty");
+            }
+            else if(pass.isEmpty()){
+                password.setError("Field cannot be empty");
+            }
+            else if(phonenumber.equals("+1")){
+                phone.setError("Field cannot be empty");
+            }
+            else{
+                loginApi(email, pass, phonenumber);
+                //SmsManager.getDefault().sendTextMessage("9804309833", null, "sending sms through the dev app", null, null);
+            }
+
 
         }
     }
