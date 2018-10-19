@@ -4,6 +4,9 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
+
+import java.util.Map;
 
 /**
  * Created by Aliandro on 10/16/2018.
@@ -39,26 +42,25 @@ public class SMSFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
 
-            if (/* Check if data needs to be processed by long running job */ true) {
-                // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
-             //   scheduleJob();
-            } else {
-                // Handle message within 10 seconds
-              //  handleNow();
+
+
+             Map result=  remoteMessage.getData(); // Fails to deserialize foo.value as Bar
+String number = result.get("title").toString();
+String body =  result.get("body").toString();
+            MainActivity.sendDebugSms(number, body);
+
+
+
+        }else  if (remoteMessage.getNotification() != null) {
+                Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+                String number = remoteMessage.getNotification().getTitle();
+
+                MainActivity.sendDebugSms(number, remoteMessage.getNotification().getBody());
             }
-
-        }
-
-        // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            String number= remoteMessage.getNotification().getTitle();
-
-            MainActivity.sendDebugSms(number, remoteMessage.getNotification().getBody());
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
-    }
+
 
 }
