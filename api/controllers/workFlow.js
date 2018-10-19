@@ -109,6 +109,7 @@ var validateUser= function(key,next) {
   User
   .find({ APIKey: key })
   .exec(function(err, user) {
+    console.log("error for API Key",err);
     console.log(user[0]);
    next(err,user[0]);
   });
