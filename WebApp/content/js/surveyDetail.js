@@ -80,7 +80,7 @@ function AppViewModel() {
             data: JSON.stringify({
                 user_id: readCookie("uid"),
               
-                url: self.urlIP()+ "/user/showlogs",
+                url: self.urlIP()+ "/user/showlogs"}),
                
                 success: function(result) {
                     //Write your code here
