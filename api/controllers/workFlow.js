@@ -51,7 +51,7 @@ if(err1){
  }
  if(data==null ){
   res.status(500).json({
-    message: "phone number not associated with this developer. Incorrect API key",
+    message: "phone number not associated with this developer.",
     status: 500
   }); 
   return;
