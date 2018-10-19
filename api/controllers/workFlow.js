@@ -182,7 +182,7 @@ var options = {
   json: true,
   url: user[0].callback_webhook
 }
-postrequest(options, function (err, res, body) {
+postrequest(options, function (err, res1, body) {
   if (err) {
     console.error('error posting json: ', err)
     res.status(500).json({
