@@ -12,8 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,12 +71,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
        btnLogin.setVisibility(View.INVISIBLE);
        TextView tex= findViewById(R.id.textView);
        tex.setText("SMS gateway is running!");
+       blink();
      }
 
 
         if ( !isSmsPermissionGranted())
             requestReadAndSendSmsPermission();
 
+    }
+    public void blink(){
+        ImageView image  = (ImageView) findViewById(R.id.logo);
+        image.setVisibility(View.VISIBLE);
+        Animation animation = new AlphaAnimation((float) 0.5, 0); // Change alpha from fully visible to invisible
+        animation.setDuration(500); // duration - half a second
+        animation.setInterpolator(new LinearInterpolator()); // do not alter
+        // animation
+        // rate
+        animation.setRepeatCount(Animation.INFINITE); // Repeat animation
+        // infinitely
+        animation.setRepeatMode(Animation.REVERSE); // Reverse animation at the
+        // end so the button will
+        // fade back in
+        image.startAnimation(animation);
     }
     public void loginApi(String username, String password, final String PhoneNumber)
     {
@@ -140,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             btnLogin.setVisibility(View.INVISIBLE);
                             TextView tex= findViewById(R.id.textView);
                             tex.setText("SMS gateway is running!");
+                            blink();
                             saveDeviceMapping(PhoneNumber,result.token);
 
                         }
