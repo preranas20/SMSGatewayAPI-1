@@ -52,9 +52,9 @@ Messages log schema: ID, from, to, date, message, status
 | gateway server app - showdeveloperdetail | snigdha |Completed|
 | gateway server app - showlogs | snigdha |Completed|
 | gateway server api- gatewayapi\SendMessage (from server to mobile) | ankit |Completed|
-| gateway server api- gatewayapi\addDevice(from server to mobile) | ankit |Completed|
+| gateway server api- gatewayapi\addDevice| ankit |Completed|
 | gateway server api- gatewayapi\recievedMessage (from mobile to server) | prerana |Completed|
-| gateway server api- gatewayapi\addMessage (from mobile to server) | prerana |Completed|
+| gateway server api- gatewayapi\addMessage| prerana |Completed|
 | gateway server api- gatewaypi\createAPIKey | prerana |Completed|
 | mobile app- login | prerana |Completed|
 | mobile app- get push notification from server | ankit | Completed|
