@@ -9,7 +9,7 @@ function AppViewModel() {
     self.newname=ko.observable('ankit');
     self.newemail=ko.observable('ak@a.com');
     self.newpassword=ko.observable('a');
-    self.callback_webhook=ko.observable('http://localhost:2000/sms');
+    self.callback_webhook=ko.observable('');
     self.APIKey = ko.observable('');
     self.role = ko.observable('');
   var token=  readCookie("token");
@@ -20,7 +20,7 @@ function AppViewModel() {
         eraseCookie("token");
         eraseCookie('role');
           self.token(null); self.role(null);
-        window.location.reload();
+        window.location="index.html";
     }
 
     self.registerclick=function(){
@@ -41,12 +41,12 @@ function AppViewModel() {
       var password= self.password();
     if(email=="") {
       $.toast({heading:'error',text:'Username is required',icon:'error'});
-      return
+      return;
 
   }
     if(password=="") {
       $.toast({heading:'error',text:'Password is required',icon:'error'});
-      return
+      return;
 
   }
 
@@ -104,14 +104,22 @@ function AppViewModel() {
       var password= self.password();
     if(email=="") {
       $.toast({heading:'error',text:'Username is required',icon:'error'});
-      return
+      return;
 
   }
     if(password=="") {
       $.toast({heading:'error',text:'Password is required',icon:'error'});
-      return
+      return;
 
   }
+
+      var callback_webhook= self.callback_webhook();
+    if(callback_webhook=="") {
+      $.toast({heading:'error',text:'Callback webhook is required',icon:'error'});
+      return;
+
+  }
+    
       
     $.ajax({
         method: "POST",
@@ -138,9 +146,11 @@ function AppViewModel() {
                 else{
                     if(result.status==200 )
                     $.toast({heading:'error',text:'Invalid User only admin is allowed to use this portal.', icon: 'error'});
-                    else
+                    else 
+ 
                     $.toast({heading:'error',text:result.responseJSON.message,icon:'error'});
-               
+              
+
                 }
                 },
             error:

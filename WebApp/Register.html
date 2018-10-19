@@ -22,6 +22,10 @@
     <div id="body">
      
     <div id="registerPage" class="container text-center" ><br>
+
+      <div class="float-right pd-3 mb-2 "> <button class=" btn btn-success " data-bind="click:$root.logout"> Back</button> 
+    </div>
+
      <div class="float-right pd-3 mb-2 "> 
     </div><br><br><br> 
     <form>  
@@ -29,6 +33,7 @@
                   <input type="password" id="password" class="fadeIn third" data-bind="value: $root.password"  placeholder="password">
                   <input type="text" id="callback_webhook" class="fadeIn second" data-bind="value: $root.callback_webhook" name="callback_webhook" placeholder="Callback Webhook" title="enter the callback webhook for your server.">
                   <input type="button" class="fadeIn fourth"  data-bind="value: 'Register',click: $root.register">
+
     </form>  
     <!-- ko if: $root.APIKey()!='' -->
     <div class="card text-center">
