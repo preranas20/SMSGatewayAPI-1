@@ -182,7 +182,14 @@ var options = {
   json: true,
   url: user[0].callback_webhook
 }
-
+postrequest(options, function (err, res1, body) {
+  if (err) {
+    console.error('error posting json: ', err)
+    res.status(500).json({
+      error: err,
+      status: 500
+    });
+  }
   const message = new Message({
     _id: new mongoose.Types.ObjectId(),
      message: req.body.message,
@@ -197,14 +204,6 @@ var options = {
      .save()
      .then(result => {
        console.log(user[0]);
-       postrequest(options, function (err, res1, body) {
-        if (err) {
-          console.error('error posting json: ', err)
-          res.status(500).json({
-            error: err,
-            status: 500
-          });
-        }
        
        res.status(201).json({
         
@@ -215,7 +214,6 @@ var options = {
          message: "Message Received",
          status: 200
        });
-      });
      })
       .catch(err => {
       console.log(err);
@@ -224,7 +222,7 @@ var options = {
        status: 500
      });
     });
-
+})
   //till here 
 
         
