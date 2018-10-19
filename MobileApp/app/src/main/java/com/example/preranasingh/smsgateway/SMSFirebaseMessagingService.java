@@ -1,11 +1,17 @@
 package com.example.preranasingh.smsgateway;
 
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.telephony.SmsManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -47,8 +53,8 @@ public class SMSFirebaseMessagingService extends FirebaseMessagingService {
              Map result=  remoteMessage.getData(); // Fails to deserialize foo.value as Bar
 String number = result.get("title").toString();
 String body =  result.get("body").toString();
-            MainActivity.sendDebugSms(number, body);
-
+            //MainActivity.sendDebugSms(number, body);
+            sendSMS(number,body);
 
 
         }else  if (remoteMessage.getNotification() != null) {
@@ -58,7 +64,31 @@ String body =  result.get("body").toString();
                 MainActivity.sendDebugSms(number, remoteMessage.getNotification().getBody());
             }
         }
+    private void sendSMS(String phoneNumber, String message) {
+        ArrayList<PendingIntent> sentPendingIntents = new ArrayList<PendingIntent>();
+        ArrayList<PendingIntent> deliveredPendingIntents = new ArrayList<PendingIntent>();
+        Context mContext =getApplicationContext();
+        PendingIntent sentPI = PendingIntent.getBroadcast(mContext, 0,
+                new Intent(mContext, SmsSentReceiver.class), 0);
+        PendingIntent deliveredPI = PendingIntent.getBroadcast(mContext, 0,
+                new Intent(mContext, SmsDeliveredReceiver.class), 0);
+        try {
+            SmsManager sms = SmsManager.getDefault();
+            ArrayList<String> mSMSMessage = sms.divideMessage(message);
+            for (int i = 0; i < mSMSMessage.size(); i++) {
+                sentPendingIntents.add(i, sentPI);
+                deliveredPendingIntents.add(i, deliveredPI);
+            }
+            sms.sendMultipartTextMessage(phoneNumber, null, mSMSMessage,
+                    sentPendingIntents, deliveredPendingIntents);
 
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            Toast.makeText(getBaseContext(), "SMS sending failed...",Toast.LENGTH_SHORT).show();
+        }
+
+    }
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
 
