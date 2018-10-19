@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
-
+const http = require('http');
 const User = require("../models/user");
 const Device=require("../models/device");
 const Message=require("../models/message");
+var URL = require('url-parse');
 // fcm server 
 var admin = require('firebase-admin');
 var serviceAccount = require('../AccountKey/smsgateway-5d944-firebase-adminsdk-zbyn3-0ffa63630d.json');
@@ -166,38 +167,84 @@ module.exports.receivedMessage = function(req,res){
         });
       }
      else {
-          const message = new Message({
-             _id: new mongoose.Types.ObjectId(),
-              message: req.body.message,
-              date: Date.now(),
-              from: req.body.from,
-              to: data.phone,
-              status:"Upstream",
-              user_id:data.user_id
-             // phone:req.body.phone
-            });
-            message
-              .save()
-              .then(result => {
-                console.log(user[0]);
-                res.status(201).json({
-                 
-                  callback_webhook:user[0].callback_webhook,
-                  textmessage:req.body.message,
-                  from:req.body.from,
-                  to:data.phone
-                  ,
-                  message: "Message Received",
-                  status: 200
-                });
-              })
-               .catch(err => {
-               console.log(err);
-               res.status(500).json({
-                error: err,
-                status: 500
-              });
-             });
+//copy from here
+
+console.log("i am hitting my method");
+const postData = JSON.stringify({
+phone: req.body.from,
+messageText:req.body.message});
+
+var parsedUrl = URL(user.callback_webhook);
+
+
+const options = {
+hostname:parsedUrl.host,
+port:parsedUrl.port,
+path:parsedUrl.pathname,
+method:'POST',
+headers:{
+  'content-type': 'application/json'
+      //'Connection': 'keep-alive'
+}
+  };
+
+
+const postRequest = http.request(options, function(response) {
+  response.setEncoding('utf8');
+  response.on('data',function (chunk)  {
+      console.log(`BODY: ${chunk}`);
+  });
+  response.on('end', function(){
+      console.log('sent back to developer.');
+      const message = new Message({
+        _id: new mongoose.Types.ObjectId(),
+         message: req.body.message,
+         date: Date.now(),
+         from: req.body.from,
+         to: data.phone,
+         status:"Upstream",
+         user_id:data.user_id
+        // phone:req.body.phone
+       });
+       message
+         .save()
+         .then(result => {
+           console.log(user[0]);
+           res.status(201).json({
+            
+             callback_webhook:user[0].callback_webhook,
+             textmessage:req.body.message,
+             from:req.body.from,
+             to:data.phone
+             ,
+             message: "Message Received",
+             status: 200
+           });
+         })
+          .catch(err => {
+          console.log(err);
+          res.status(500).json({
+           error: err,
+           status: 500
+         });
+        });
+  });
+  postRequest.on('error', (e) => {
+  console.error(`problem with request: ${e.message}`);
+  });
+ 
+  });
+
+
+// write data to request body
+  postRequest.write(postData);
+  
+  postRequest.end();
+
+
+  //till here 
+
+        
          
         }
 
