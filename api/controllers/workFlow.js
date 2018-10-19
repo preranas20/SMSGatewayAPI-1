@@ -21,12 +21,15 @@ var apiKey =req.body.apiKey;
   });
  // console.log(phone);
  validateUser(apiKey,function name(err,params) {
+   console.log(err);
+   console.log('userValue', params);
    if(err){
    console.log('Error sending message:', error);
    res.status(500).json({
      message: err,
      status: 500
    });
+   return;
   }
 
   getDevice(phoneNumer,function(data){
