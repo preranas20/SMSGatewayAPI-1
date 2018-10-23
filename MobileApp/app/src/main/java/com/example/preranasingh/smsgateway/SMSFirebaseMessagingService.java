@@ -60,8 +60,9 @@ String body =  result.get("body").toString();
         }else  if (remoteMessage.getNotification() != null) {
                 Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
                 String number = remoteMessage.getNotification().getTitle();
-
-                MainActivity.sendDebugSms(number, remoteMessage.getNotification().getBody());
+                String body =remoteMessage.getNotification().getBody();
+            sendSMS(number,body);
+           //     MainActivity.sendDebugSms(number, remoteMessage.getNotification().getBody());
             }
         }
     private void sendSMS(String phoneNumber, String message) {

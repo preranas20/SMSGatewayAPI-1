@@ -71,10 +71,7 @@ var newmessage = new Message({
       console.log('sending sms to mobile...');
 // See documentation on defining a message payload.
       var message = {
-        notification: {
-          title: toPhoneNumber,
-          body: messageText
-      },
+        
       data: {
         title: toPhoneNumber,
         body: messageText
