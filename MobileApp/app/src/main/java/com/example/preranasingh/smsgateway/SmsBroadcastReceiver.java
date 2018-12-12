@@ -35,7 +35,7 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
 
     private Listener listener;
    // private String remoteIP="http://18.234.89.40:5000";
-    private String remoteIP="http://18.223.110.166:5000";
+    private String remoteIP="http://52.202.147.130:1000";
 
     public SmsBroadcastReceiver() {
 
