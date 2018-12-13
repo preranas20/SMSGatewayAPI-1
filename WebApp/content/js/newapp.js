@@ -5,7 +5,7 @@ function AppViewModel() {
    // var qrcode = new QRCode("qrcode");
     self.email=ko.observable('');
     self.password=ko.observable('');
-    self.urlIP=ko.observable('http://18.223.110.166:5000');
+    self.urlIP=ko.observable('http://52.202.147.130:1000');
     self.newname=ko.observable('ankit');
     self.newemail=ko.observable('ak@a.com');
     self.newpassword=ko.observable('a');
@@ -282,7 +282,7 @@ self.showUserDetailTable= function (tabledata) {
             age:"10",
         weight: "10",
     address: "US" }),
-                url: "http://18.223.110.166:5000/user/signup",
+                url: "http://52.202.147.130:1000/user/signup",
                
                 success: function(result) {
                     //Write your code here

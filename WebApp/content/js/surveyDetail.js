@@ -5,7 +5,7 @@ function AppViewModel() {
     
     self.email=ko.observable('ak@a.com');
     self.password=ko.observable('a');
-    self.urlIP=ko.observable('http://18.223.110.166:5000');
+    self.urlIP=ko.observable('http://52.202.147.130:1000');
     
     self.newname=ko.observable('ankit');
     self.newemail=ko.observable('ak@a.com');
@@ -29,7 +29,7 @@ function AppViewModel() {
         data: JSON.stringify({
             email: self.email(),
             password:self.password() }),
-            url: "http://18.223.110.166:5000/user/login",
+            url: "http://52.202.147.130:1000/user/login",
            
             success: function(result) {
                 //Write your code here
