@@ -42,7 +42,7 @@ import okhttp3.ResponseBody;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG ="smsTest" ;
    // private static String remoteIP="http://18.234.89.40:5000";
-    private String remoteIP="http://52.202.147.130:1000"; //ankit ec2
+    private String remoteIP="http://52.202.147.130:5000"; //ankit ec2
 
     TextView username,password,phone;
     Button btnLogin;
