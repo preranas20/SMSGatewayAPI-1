@@ -42,29 +42,6 @@ Device Registry schema: Data attributes include UID, Phone_ID
 User Details Schema: Data attributes include email, UID, APIKey, callback_webhook, hash
 Messages log schema: ID, from, to, date, message, status
 
-
-# A table that lists the different tasks and the name of the team member who is going to work on this task.
-
-| Task | Team member |Status|
-| --- | --- |---|
-| gateway server app - login and signup | snigdha |Completed|
-| gateway server app - showdevelopers | snigdha |Completed|
-| gateway server app - showdeveloperdetail | snigdha |Completed|
-| gateway server app - showlogs | snigdha |Completed|
-| gateway server api- gatewayapi\SendMessage (from server to mobile) | ankit |Completed|
-| gateway server api- gatewayapi\addDevice| ankit |Completed|
-| gateway server api- gatewayapi\recievedMessage (from mobile to server) | prerana |Completed|
-| gateway server api- gatewayapi\addMessage| prerana |Completed|
-| gateway server api- gatewaypi\createAPIKey | prerana |Completed|
-| mobile app- login | prerana |Completed|
-| mobile app- get push notification from server | ankit | Completed|
-| mobile app- send and read sms | ankit |Completed|
-| mobile app- get phone numbner | ankit |Android restrictes|
-| Web App UI - login and signup | ankit|Completed|
-| Web App UI - showDevelopers | ankit|Completed|
-| Web App UI - showMessageLogs| ankit|Completed|
-|Running sms in background|ankit|Android Restricts|
-
 # Bug List
 | Task | Team member |Status|
 | --- | --- | --- |
